@@ -112,7 +112,9 @@
       display: flex;
       gap: 0.75rem;
       justify-content: center;
+      align-items: center;
       margin-top: 0.5rem;
+      position: relative;
     }
     .action-buttons button {
       padding: 0.8rem 1.6rem;
@@ -129,23 +131,16 @@
       background-color: #2a50d9;
       transform: translateY(-2px);
     }
-    .toast {
-      position: fixed;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: #3a66f7;
-      color: white;
-      padding: 0.75rem 1.25rem;
-      border-radius: 1rem;
-      font-size: 0.95rem;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    .copy-feedback {
+      position: absolute;
+      bottom: -1.8rem;
+      font-size: 0.85rem;
+      color: #3a66f7;
       display: none;
-      z-index: 1000;
+      background: transparent;
     }
-    .dark .toast {
-      background-color: #88b3ff;
-      color: #000;
+    .dark .copy-feedback {
+      color: #88b3ff;
     }
     footer {
       margin-top: 2rem;
@@ -168,10 +163,10 @@
     <div class="action-buttons">
       <button onclick="generateNickname()">새로 만들기</button>
       <button onclick="copyNickname()">복사하기</button>
+      <div id="copyFeedback" class="copy-feedback">복사 되었습니다!</div>
     </div>
     <footer>Made with ♥ by Jeongph</footer>
   </div>
-  <div class="toast" id="toast">복사 되었습니다!</div>
 
   <script>
     const firstWords = [
@@ -191,6 +186,7 @@
       const second = secondWords[Math.floor(Math.random() * secondWords.length)];
       const nickname = first + second;
       document.getElementById("nickname").textContent = nickname;
+      document.getElementById("copyFeedback").style.display = "none";
     }
 
     function toggleDarkMode() {
@@ -210,15 +206,9 @@
       tempInput.select();
       document.execCommand("copy");
       document.body.removeChild(tempInput);
-      showToast();
-    }
-
-    function showToast() {
-      const toast = document.getElementById("toast");
-      toast.style.display = "block";
-      setTimeout(() => {
-        toast.style.display = "none";
-      }, 2000);
+      const feedback = document.getElementById("copyFeedback");
+      feedback.style.display = "block";
+      setTimeout(() => feedback.style.display = "none", 2000);
     }
 
     generateNickname();
