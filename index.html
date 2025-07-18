@@ -34,30 +34,58 @@
       color: #88b3ff;
       text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
     }
-    .dark button {
+    .dark .action-buttons button {
       background-color: #444;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     }
-    .dark button:hover {
+    .dark .action-buttons button:hover {
       background-color: #666;
     }
-    .toggle-dark {
+    .toggle-switch {
       position: absolute;
       top: 1.5rem;
       right: 1.5rem;
-      background: #ffffff22;
-      border: 2px solid #3a66f7;
-      color: #3a66f7;
-      padding: 0.4rem 0.8rem;
-      border-radius: 1rem;
-      cursor: pointer;
-      font-size: 0.9rem;
-      transition: all 0.2s ease;
-      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
-    .dark .toggle-dark {
-      border-color: #aaa;
-      color: #fff;
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 24px;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      border-radius: 24px;
+      transition: 0.4s;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      border-radius: 50%;
+      transition: 0.4s;
+    }
+    input:checked + .slider {
+      background-color: #3a66f7;
+    }
+    input:checked + .slider:before {
+      transform: translateX(24px);
     }
     .container {
       background: #ffffff;
@@ -80,7 +108,13 @@
       color: #3a66f7;
       text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
     }
-    button {
+    .action-buttons {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      margin-top: 0.5rem;
+    }
+    .action-buttons button {
       padding: 0.8rem 1.6rem;
       font-size: 1.05rem;
       background-color: #3a66f7;
@@ -91,9 +125,27 @@
       transition: background-color 0.2s ease, transform 0.1s ease;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
-    button:hover {
+    .action-buttons button:hover {
       background-color: #2a50d9;
       transform: translateY(-2px);
+    }
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #3a66f7;
+      color: white;
+      padding: 0.75rem 1.25rem;
+      border-radius: 1rem;
+      font-size: 0.95rem;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      display: none;
+      z-index: 1000;
+    }
+    .dark .toast {
+      background-color: #88b3ff;
+      color: #000;
     }
     footer {
       margin-top: 2rem;
@@ -103,13 +155,23 @@
   </style>
 </head>
 <body class="dark">
-  <button class="toggle-dark" onclick="toggleDarkMode()">🌙 다크모드</button>
+  <div class="toggle-switch">
+    <label class="switch">
+      <input type="checkbox" id="modeToggle" checked onchange="toggleDarkMode()">
+      <span class="slider"></span>
+    </label>
+    <span id="modeLabel">다크모드</span>
+  </div>
   <div class="container">
     <h1>랜덤 닉네임 생성기</h1>
     <div class="nickname" id="nickname">🍥</div>
-    <button onclick="generateNickname()">새로 만들기</button>
+    <div class="action-buttons">
+      <button onclick="generateNickname()">새로 만들기</button>
+      <button onclick="copyNickname()">복사하기</button>
+    </div>
     <footer>Made with ♥ by Jeongph</footer>
   </div>
+  <div class="toast" id="toast">복사 되었습니다!</div>
 
   <script>
     const firstWords = [
@@ -127,11 +189,36 @@
     function generateNickname() {
       const first = firstWords[Math.floor(Math.random() * firstWords.length)];
       const second = secondWords[Math.floor(Math.random() * secondWords.length)];
-      document.getElementById("nickname").textContent = first + second;
+      const nickname = first + second;
+      document.getElementById("nickname").textContent = nickname;
     }
 
     function toggleDarkMode() {
-      document.body.classList.toggle("dark");
+      const body = document.body;
+      const isDark = body.classList.toggle("dark");
+      const modeToggle = document.getElementById("modeToggle");
+      const modeLabel = document.getElementById("modeLabel");
+      modeToggle.checked = isDark;
+      modeLabel.textContent = isDark ? "다크모드" : "라이트모드";
+    }
+
+    function copyNickname() {
+      const text = document.getElementById("nickname").textContent;
+      const tempInput = document.createElement("textarea");
+      tempInput.value = text;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand("copy");
+      document.body.removeChild(tempInput);
+      showToast();
+    }
+
+    function showToast() {
+      const toast = document.getElementById("toast");
+      toast.style.display = "block";
+      setTimeout(() => {
+        toast.style.display = "none";
+      }, 2000);
     }
 
     generateNickname();
