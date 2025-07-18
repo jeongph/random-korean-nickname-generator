@@ -13,11 +13,48 @@
     body {
       font-family: 'Pretendard', sans-serif;
       background: linear-gradient(to right, #f0f4ff, #eaf6ff);
+      color: #333;
+      transition: background-color 0.3s, color 0.3s;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 2rem;
+      position: relative;
+    }
+    body.dark {
+      background: #121212;
+      color: #f0f0f0;
+    }
+    .dark .container {
+      background: #1e1e1e;
+      box-shadow: 0 10px 30px rgba(255, 255, 255, 0.05);
+    }
+    .dark .nickname {
+      color: #88b3ff;
+    }
+    .dark button {
+      background-color: #555;
+    }
+    .dark button:hover {
+      background-color: #777;
+    }
+    .toggle-dark {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: none;
+      border: 2px solid #3a66f7;
+      color: #3a66f7;
+      padding: 0.4rem 0.8rem;
+      border-radius: 1rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+    .dark .toggle-dark {
+      border-color: #fff;
+      color: #fff;
     }
     .container {
       background: #ffffff;
@@ -31,7 +68,6 @@
     h1 {
       font-size: 1.75rem;
       margin-bottom: 1rem;
-      color: #333;
     }
     .nickname {
       font-size: 2rem;
@@ -60,6 +96,7 @@
   </style>
 </head>
 <body>
+  <button class="toggle-dark" onclick="toggleDarkMode()">🌙 다크모드</button>
   <div class="container">
     <h1>랜덤 닉네임 생성기</h1>
     <div class="nickname" id="nickname">🍥</div>
@@ -69,15 +106,15 @@
 
   <script>
     const firstWords = [
-      "달빛", "노을", "바람", "초코", "무지개",
-      "별빛", "눈송이", "파도", "소금", "구름",
-      "비밀", "햇살", "하늘", "몽글", "푸른"
+      "달빛", "노을", "바람", "초코", "무지개", "별빛", "눈송이", "파도", "소금", "구름",
+      "비밀", "햇살", "하늘", "몽글", "푸른", "안개", "연두", "쏘다", "고요", "솔향",
+      "은하", "초승달", "단풍", "바다", "잿빛", "눈부신", "보랏빛", "초여름", "가을", "해질녘"
     ];
 
     const secondWords = [
-      "감자", "고래", "너구리", "참깨", "펭귄",
-      "콩나물", "두루미", "마녀", "여우", "멜론",
-      "사슴", "고슴도치", "모래", "달팽이", "나비"
+      "감자", "고래", "너구리", "참깨", "펭귄", "콩나물", "두루미", "마녀", "여우", "멜론",
+      "사슴", "고슴도치", "모래", "달팽이", "나비", "참새", "앵무새", "멧돼지", "양파", "구슬",
+      "밤톨", "꽃게", "두더지", "문어", "갈매기", "다람쥐", "족제비", "거북이", "코끼리", "풍선"
     ];
 
     function generateNickname() {
@@ -86,7 +123,10 @@
       document.getElementById("nickname").textContent = first + second;
     }
 
-    // 첫 로딩 시 닉네임 생성
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+    }
+
     generateNickname();
   </script>
 </body>
