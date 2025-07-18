@@ -28,22 +28,24 @@
     }
     .dark .container {
       background: #1e1e1e;
-      box-shadow: 0 10px 30px rgba(255, 255, 255, 0.05);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
     }
     .dark .nickname {
       color: #88b3ff;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
     }
     .dark button {
-      background-color: #555;
+      background-color: #444;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     }
     .dark button:hover {
-      background-color: #777;
+      background-color: #666;
     }
     .toggle-dark {
       position: absolute;
       top: 1.5rem;
       right: 1.5rem;
-      background: none;
+      background: #ffffff22;
       border: 2px solid #3a66f7;
       color: #3a66f7;
       padding: 0.4rem 0.8rem;
@@ -51,51 +53,56 @@
       cursor: pointer;
       font-size: 0.9rem;
       transition: all 0.2s ease;
+      backdrop-filter: blur(4px);
     }
     .dark .toggle-dark {
-      border-color: #fff;
+      border-color: #aaa;
       color: #fff;
     }
     .container {
       background: #ffffff;
       padding: 3rem 2rem;
       border-radius: 1.5rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-      max-width: 400px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+      max-width: 420px;
       width: 100%;
       text-align: center;
+      transition: all 0.3s ease;
     }
     h1 {
-      font-size: 1.75rem;
-      margin-bottom: 1rem;
+      font-size: 1.85rem;
+      margin-bottom: 1.25rem;
     }
     .nickname {
-      font-size: 2rem;
-      font-weight: bold;
+      font-size: 2.2rem;
+      font-weight: 700;
       margin: 2rem 0;
       color: #3a66f7;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
     }
     button {
-      padding: 0.75rem 1.5rem;
-      font-size: 1rem;
+      padding: 0.8rem 1.6rem;
+      font-size: 1.05rem;
       background-color: #3a66f7;
       color: #fff;
       border: none;
       border-radius: 0.75rem;
       cursor: pointer;
-      transition: background-color 0.2s ease;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
     button:hover {
       background-color: #2a50d9;
+      transform: translateY(-2px);
     }
     footer {
       margin-top: 2rem;
-      font-size: 0.875rem;
+      font-size: 0.85rem;
       color: #aaa;
     }
   </style>
 </head>
-<body>
+<body class="dark">
   <button class="toggle-dark" onclick="toggleDarkMode()">🌙 다크모드</button>
   <div class="container">
     <h1>랜덤 닉네임 생성기</h1>
