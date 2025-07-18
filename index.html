@@ -4,10 +4,90 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>랜덤 닉네임 생성기</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Pretendard', sans-serif;
+      background: linear-gradient(to right, #f0f4ff, #eaf6ff);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .container {
+      background: #ffffff;
+      padding: 3rem 2rem;
+      border-radius: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+    h1 {
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+    .nickname {
+      font-size: 2rem;
+      font-weight: bold;
+      margin: 2rem 0;
+      color: #3a66f7;
+    }
+    button {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      background-color: #3a66f7;
+      color: #fff;
+      border: none;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    button:hover {
+      background-color: #2a50d9;
+    }
+    footer {
+      margin-top: 2rem;
+      font-size: 0.875rem;
+      color: #aaa;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
-    
+    <h1>랜덤 닉네임 생성기</h1>
+    <div class="nickname" id="nickname">🍥</div>
+    <button onclick="generateNickname()">새로 만들기</button>
+    <footer>Made with ♥ by Jeongph</footer>
   </div>
+
+  <script>
+    const firstWords = [
+      "달빛", "노을", "바람", "초코", "무지개",
+      "별빛", "눈송이", "파도", "소금", "구름",
+      "비밀", "햇살", "하늘", "몽글", "푸른"
+    ];
+
+    const secondWords = [
+      "감자", "고래", "너구리", "참깨", "펭귄",
+      "콩나물", "두루미", "마녀", "여우", "멜론",
+      "사슴", "고슴도치", "모래", "달팽이", "나비"
+    ];
+
+    function generateNickname() {
+      const first = firstWords[Math.floor(Math.random() * firstWords.length)];
+      const second = secondWords[Math.floor(Math.random() * secondWords.length)];
+      document.getElementById("nickname").textContent = first + second;
+    }
+
+    // 첫 로딩 시 닉네임 생성
+    generateNickname();
+  </script>
 </body>
 </html>
