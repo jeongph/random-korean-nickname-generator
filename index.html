@@ -1,161 +1,165 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>랜덤 닉네임 생성기</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    @import url('https://fonts.googleapis.com/css2?family=Pretendard&display=swap');
+
     body {
       font-family: 'Pretendard', sans-serif;
-      background: linear-gradient(to right, #f0f4ff, #eaf6ff);
-      color: #333;
-      transition: background-color 0.3s, color 0.3s;
-      min-height: 100vh;
+      background-color: #0d1117;
+      color: #c9d1d9;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 2rem;
+      min-height: 100vh;
+      margin: 0;
+    }
+    body.light {
+      background-color: #fdfdfd;
+      color: #1c1c1c;
+    }
+    .container {
+      background-color: #161b22;
+      padding: 2rem 2.5rem;
+      border-radius: 1.2rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+      text-align: center;
       position: relative;
+      width: 300px;
     }
-    body.dark {
-      background: #121212;
-      color: #f0f0f0;
+    body.light .container {
+      background-color: #ffffff;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
     }
-    .dark .container {
-      background: #1e1e1e;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
     }
-    .dark .nickname {
-      color: #88b3ff;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+    .nickname {
+      font-size: 2.2rem;
+      font-weight: 600;
+      margin: 1.5rem 0;
+      color: #58a6ff;
+      word-break: keep-all;
     }
-    .dark .action-buttons button {
-      background-color: #444;
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 0.8rem;
     }
-    .dark .action-buttons button:hover {
-      background-color: #666;
+    .action-buttons button {
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 0.6rem;
+      background-color: #238636;
+      color: white;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
     }
-    .toggle-switch {
+    .action-buttons button:hover {
+      background-color: #2ea043;
+    }
+    body.light .action-buttons button {
+      background-color: #e4e4e4;
+      color: #111;
+    }
+    body.light .action-buttons button:hover {
+      background-color: #d1d1d1;
+    }
+    .copy-feedback {
       position: absolute;
-      top: 1.5rem;
-      right: 1.5rem;
+      top: 105%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #21262d;
+      padding: 0.4rem 0.8rem;
+      border-radius: 0.5rem;
+      font-size: 0.85rem;
+      color: #79c0ff;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .copy-feedback.show {
+      opacity: 1;
+    }
+    body.light .copy-feedback {
+      background-color: #e8e8e8;
+      color: #2a7ae2;
+    }
+    .mode-switch {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
-    .switch {
+    .mode-switch input[type="checkbox"] {
+      width: 40px;
+      height: 20px;
+      appearance: none;
+      background: #444;
+      border-radius: 20px;
       position: relative;
-      display: inline-block;
-      width: 48px;
-      height: 24px;
-    }
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-    .slider {
-      position: absolute;
+      outline: none;
       cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #ccc;
-      border-radius: 24px;
-      transition: 0.4s;
     }
-    .slider:before {
-      position: absolute;
+    .mode-switch input[type="checkbox"]:checked {
+      background: #238636;
+    }
+    .mode-switch input[type="checkbox"]::before {
       content: "";
-      height: 18px;
-      width: 18px;
-      left: 3px;
-      bottom: 3px;
-      background-color: white;
+      width: 16px;
+      height: 16px;
       border-radius: 50%;
-      transition: 0.4s;
-    }
-    input:checked + .slider {
-      background-color: #3a66f7;
-    }
-    input:checked + .slider:before {
-      transform: translateX(24px);
-    }
-    .container {
-      background: #ffffff;
-      padding: 3rem 2rem;
-      border-radius: 1.5rem;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
-      max-width: 420px;
-      width: 100%;
-      text-align: center;
-      transition: all 0.3s ease;
-    }
-    h1 {
-      font-size: 1.85rem;
-      margin-bottom: 1.25rem;
-    }
-    .nickname {
-      font-size: 2.2rem;
-      font-weight: 700;
-      margin: 2rem 0;
-      color: #3a66f7;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-    }
-    .action-buttons {
-      display: flex;
-      gap: 0.75rem;
-      justify-content: center;
-      align-items: center;
-      margin-top: 0.5rem;
-      position: relative;
-    }
-    .action-buttons button {
-      padding: 0.8rem 1.6rem;
-      font-size: 1.05rem;
-      background-color: #3a66f7;
-      color: #fff;
-      border: none;
-      border-radius: 0.75rem;
-      cursor: pointer;
-      transition: background-color 0.2s ease, transform 0.1s ease;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-    .action-buttons button:hover {
-      background-color: #2a50d9;
-      transform: translateY(-2px);
-    }
-    .copy-feedback {
+      background: #fff;
       position: absolute;
-      bottom: -1.8rem;
-      font-size: 0.85rem;
-      color: #3a66f7;
-      display: none;
-      background: transparent;
+      top: 2px;
+      left: 2px;
+      transition: 0.3s;
     }
-    .dark .copy-feedback {
-      color: #88b3ff;
+    .mode-switch input[type="checkbox"]:checked::before {
+      transform: translateX(20px);
+    }
+    .mode-switch label {
+      font-size: 0.85rem;
+    }
+    .mode-select {
+      margin-top: 1.5rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .mode-select label {
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      cursor: pointer;
+    }
+    .mode-select input[type="radio"] {
+      accent-color: #58a6ff;
+      cursor: pointer;
     }
     footer {
       margin-top: 2rem;
-      font-size: 0.85rem;
-      color: #aaa;
+      font-size: 0.75rem;
+      opacity: 0.5;
     }
   </style>
 </head>
 <body class="dark">
-  <div class="toggle-switch">
-    <label class="switch">
-      <input type="checkbox" id="modeToggle" checked onchange="toggleDarkMode()">
-      <span class="slider"></span>
-    </label>
-    <span id="modeLabel">다크모드</span>
+  <div class="mode-switch">
+    <label for="modeToggle">다크모드</label>
+    <input type="checkbox" id="modeToggle" checked onchange="toggleDarkMode()" />
   </div>
   <div class="container">
     <h1>랜덤 닉네임 생성기</h1>
@@ -163,55 +167,88 @@
     <div class="action-buttons">
       <button onclick="generateNickname()">새로 만들기</button>
       <button onclick="copyNickname()">복사하기</button>
-      <div id="copyFeedback" class="copy-feedback">복사 되었습니다!</div>
+    </div>
+    <div id="copyFeedback" class="copy-feedback">복사 되었습니다!</div>
+    <div class="mode-select">
+      <label>
+        <input type="radio" name="mode" value="meaningful" checked onchange="setMode('meaningful')" />
+        의미 있는 닉네임
+      </label>
+      <label>
+        <input type="radio" name="mode" value="syllable" onchange="setMode('syllable')" />
+        무작위 음절 조합
+      </label>
     </div>
     <footer>Made with ♥ by Jeongph</footer>
   </div>
-
   <script>
-    const firstWords = [
-      "달빛", "노을", "바람", "초코", "무지개", "별빛", "눈송이", "파도", "소금", "구름",
-      "비밀", "햇살", "하늘", "몽글", "푸른", "안개", "연두", "쏘다", "고요", "솔향",
-      "은하", "초승달", "단풍", "바다", "잿빛", "눈부신", "보랏빛", "초여름", "가을", "해질녘"
-    ];
+    document.addEventListener("DOMContentLoaded", function () {
+      let mode = "meaningful";
 
-    const secondWords = [
-      "감자", "고래", "너구리", "참깨", "펭귄", "콩나물", "두루미", "마녀", "여우", "멜론",
-      "사슴", "고슴도치", "모래", "달팽이", "나비", "참새", "앵무새", "멧돼지", "양파", "구슬",
-      "밤톨", "꽃게", "두더지", "문어", "갈매기", "다람쥐", "족제비", "거북이", "코끼리", "풍선"
-    ];
+      const firstWords = ["푸른", "고요한", "따뜻한", "달콤한", "빛나는", "작은", "하늘", "노을", "햇살", "달빛"];
+      const secondWords = ["별", "달", "바람", "강", "숲", "고래", "사슴", "꽃", "노래", "꿈"];
 
-    function generateNickname() {
-      const first = firstWords[Math.floor(Math.random() * firstWords.length)];
-      const second = secondWords[Math.floor(Math.random() * secondWords.length)];
-      const nickname = first + second;
-      document.getElementById("nickname").textContent = nickname;
-      document.getElementById("copyFeedback").style.display = "none";
-    }
+      function random(arr) {
+        return arr[Math.floor(Math.random() * arr.length)];
+      }
 
-    function toggleDarkMode() {
-      const body = document.body;
-      const isDark = body.classList.toggle("dark");
-      const modeToggle = document.getElementById("modeToggle");
-      const modeLabel = document.getElementById("modeLabel");
-      modeToggle.checked = isDark;
-      modeLabel.textContent = isDark ? "다크모드" : "라이트모드";
-    }
+      function makeSyllable() {
+        const choseong = ["ㄱ", "ㄲ", "ㄴ", "ㄷ", "ㄸ", "ㄹ", "ㅁ", "ㅂ", "ㅃ", "ㅅ", "ㅆ", "ㅇ", "ㅈ", "ㅉ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"];
+        const jungseong = ["ㅏ", "ㅐ", "ㅑ", "ㅒ", "ㅓ", "ㅔ", "ㅕ", "ㅖ", "ㅗ", "ㅘ", "ㅙ", "ㅚ", "ㅛ", "ㅜ", "ㅝ", "ㅞ", "ㅟ", "ㅠ", "ㅡ", "ㅢ", "ㅣ"];
+        const jongseong = ["", "ㄱ", "ㄲ", "ㄳ", "ㄴ", "ㄵ", "ㄶ", "ㄷ", "ㄹ", "ㄺ", "ㄻ", "ㄼ", "ㄽ", "ㄾ", "ㄿ", "ㅀ", "ㅁ", "ㅂ", "ㅄ", "ㅅ", "ㅆ", "ㅇ", "ㅈ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"];
 
-    function copyNickname() {
-      const text = document.getElementById("nickname").textContent;
-      const tempInput = document.createElement("textarea");
-      tempInput.value = text;
-      document.body.appendChild(tempInput);
-      tempInput.select();
-      document.execCommand("copy");
-      document.body.removeChild(tempInput);
-      const feedback = document.getElementById("copyFeedback");
-      feedback.style.display = "block";
-      setTimeout(() => feedback.style.display = "none", 2000);
-    }
+        const choIndex = Math.floor(Math.random() * choseong.length);
+        const jungIndex = Math.floor(Math.random() * jungseong.length);
+        const jongIndex = Math.floor(Math.random() * jongseong.length);
 
-    generateNickname();
+        const unicode = 0xac00 + (choIndex * 21 + jungIndex) * 28 + jongIndex;
+        if (unicode > 0xd7a3) return makeSyllable();
+        return String.fromCharCode(unicode);
+      }
+
+      function generateNickname() {
+        let nickname = "";
+        if (mode === "meaningful") {
+          nickname = random(firstWords) + random(secondWords);
+        } else {
+          const len = 2 + Math.floor(Math.random() * 2);
+          for (let i = 0; i < len; i++) nickname += makeSyllable();
+        }
+        document.getElementById("nickname").textContent = nickname;
+        document.getElementById("copyFeedback").classList.remove("show");
+      }
+
+      function setMode(m) {
+        mode = m;
+        generateNickname();
+      }
+
+      function toggleDarkMode() {
+        const body = document.body;
+        const isDark = body.classList.toggle("light");
+        document.getElementById("modeToggle").checked = !isDark;
+      }
+
+      function copyNickname() {
+        const text = document.getElementById("nickname").textContent;
+        const tempInput = document.createElement("textarea");
+        tempInput.value = text;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+        const feedback = document.getElementById("copyFeedback");
+        feedback.classList.add("show");
+        setTimeout(() => feedback.classList.remove("show"), 2000);
+      }
+
+      window.generateNickname = generateNickname;
+      window.copyNickname = copyNickname;
+      window.toggleDarkMode = toggleDarkMode;
+      window.setMode = setMode;
+
+      generateNickname();
+    });
   </script>
 </body>
 </html>
