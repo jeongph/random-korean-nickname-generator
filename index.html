@@ -193,7 +193,7 @@
         "익숙한", "서툰", "비오는", "쓸쓸한", "그리운", "잊혀진", "거친", "불안한", "무심한", "애틋한",
         "노란", "푸르른", "하얀", "검은", "회색의", "짙은", "밝은", "어두운", "청량한", "무거운",
         "느린", "빠른", "흐린", "쨍한", "따가운", "시원한", "상쾌한", "어린", "늙은", "고운",
-        "화려한", "단정한", "어색한", "진한", "연한", "짙은", "흐릿한", "선명한", "선선한", "냉정한",
+        "화려한", "단정한", "어색한", "진한", "연한", "흐릿한", "선명한", "선선한", "냉정한",
         "온화한", "미묘한", "명확한", "편안한", "무던한", "건조한", "습한", "폭신한", "매끄러운", "까칠한",
         "말랑한", "딱딱한", "흔한", "특별한", "유니크한", "친근한", "낯선", "깊숙한", "낮은", "높은"
       ];
@@ -246,10 +246,12 @@
       }
 
       function toggleDarkMode() {
-        const body = document.body;
-        const isDark = body.classList.toggle("light");
-        document.getElementById("modeToggle").checked = !isDark;
-      }
+  const body = document.body;
+  const isLight = body.classList.toggle("light");
+  document.getElementById("modeToggle").checked = !isLight;
+  const label = document.querySelector(".mode-switch label");
+  label.textContent = isLight ? "라이트모드" : "다크모드";
+}
 
       function copyNickname() {
         const text = document.getElementById("nickname").textContent;
